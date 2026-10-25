@@ -10,6 +10,16 @@ const passages = {
     "yangi bilimlarni o'rganish uchun ko'p vaqt kerak bo'lishi shart emas har kuni ozgina harakat qilish va o'rgangan narsalarni takrorlash yaxshi natija beradi",
     "men kelajakda foydali dasturlar yaratishni xohlayman odamlar foydalanadigan saytlar va ilovalar yaratish uchun dasturlashni o'rganaman va ko'proq amaliyot qilaman",
     "tabiatni asrash har bir insonning vazifasidir daraxt ekish suvni tejash va atrofni toza saqlash orqali biz yashaydigan joyni yanada chiroyli qilishimiz mumkin"
+    "kompyuterda kod yozish juda qiziqarli mashg'ulot hisoblanadi har kuni yangi buyruqlarni o'rganib kichik dasturlar tuzaman",
+    "sayt yaratish uchun html va css tillarini bilish muhim ularni o'rganish boshida oson va tushunarli bo'ladi",
+    "dasturlashda xatolar chiqishi tabiiy hol ularni topib to'g'rilash orqali tajriba orttiramiz va tezroq o'rganamiz",
+    "telefon uchun ilovalar va qiziqarli o'yinlar yaratish ko'pchilikning orzusi hisoblanadi buning uchun sabr va kuchli xohish kerak",
+    "har bir dasturchi o'z ishini yaxshi bajarishi uchun doimiy ravishda o'qib izlanishi va yangi texnologiyalarni sinab ko'rishi lozim",
+    "klaviaturada tez va xatosiz yozish uchun har kuni maxsus matnlar bilan shug'ullanish juda katta yordam beradi",
+    "dastur kodlarini yozish jarayonida mantiqiy fikrlash va har bir mayda detalga e'tibor qaratish talab etiladi",
+    "internet tarmog'idan foydalanib dunyoning istalgan nuqtasidagi dasturchilar bilan tajriba almashish va birga ishlash mumkin",
+    "shaxsiy kompyuter xotirasini tartibda saqlash va keraksiz fayllarni tozalab turish uning tez ishlashini ta'minlaydi",
+    "har bir yangi yaratilgan veb-sahifa yoki kichik dastur bizga kelajakdagi katta loyihalar uchun poydevor bo'lib xizmat qiladi"
   ],
 
   medium: [
@@ -23,6 +33,16 @@ const passages = {
     "Yaxshi dastur foydalanuvchiga tushunarli, tezkor va qulay bo'lishi kerak. Interfeysni sinab ko'rish va foydalanuvchilarning fikrlarini tinglash sifatni yaxshilaydi.",
     "Ma'lumotlarni tartibli saqlash va kerakli paytda tez topish ko'plab dasturlar uchun muhimdir. To'g'ri rejalashtirilgan ma'lumotlar bazasi tizimning ishonchli ishlashiga yordam beradi.",
     "Yangi til o'rganishda har kuni mashq qilish, yangi so'zlarni takrorlash va ularni gaplarda ishlatish foydali. Xatolarni tahlil qilish esa bilimlarni mustahkamlaydi."
+    "Veb-ilovalar yaratishda frontend va backend qismlari birgalikda ishlaydi. Frontend foydalanuvchi ko'radigan interfeysni, backend esa server va ma'lumotlar bazasini boshqaradi.",
+    "Ma'lumotlar bazasi bilan ishlashda SQL so'rovlaridan foydalaniladi. Jadvallar orasidagi bog'liqlikni to'g'ri tuzish dasturning xavfsiz va tez ishlashini ta'minlaydi.",
+    "Git va GitHub yordamida dasturchilar o'z kodlarini xavfsiz saqlashadi va boshqa jamoa a'zolari bilan birgalikda yagona loyiha ustida ishlash imkoniyatiga ega bo'ladilar.",
+    "Python tili sodda sintaksisi va keng imkoniyatlari tufayli boshlanuvchilar uchun eng qulay tillardan biri sanaladi. U sun'iy intellekt va avtomatlashtirishda ko'p ishlatiladi.",
+    "O'yin yaratish jarayoni mantiqiy fikrlash, ob'ektlar harakati va foydalanuvchi interfeysini loyihalashni o'z ichiga oladi. Har bir qism o'ziga xos qiyinchilik va zavq beradi.",
+    "Asinxron dasturlash vaqti-vaqti bilan javob kutish talab qilinadigan jarayonlarda serverning qotib qolmasdan boshqa vazifalarni bajarishiga imkon beradi.",
+    "Foydalanuvchi interfeysi (UI) dizayni qanchalik tushunarli va qulay bo'lsa, ilovaning ommalashish ehtimoli shunchalik yuqori bo'ladi.",
+    "API texnologiyasi turli xil dasturlar va ilovalar bir-biri bilan ma'lumot almashishi hamda o'zaro bog'lanib ishlashi uchun ko'prik vazifasini o'taydi.",
+    "Dasturkodini optimallashtirish uning xotiradan kamroq joy egallashi va tezroq bajarilishini ta'minlash uchun amalga oshiriladigan muhim bosqichdir.",
+    "Kiberxavfsizlik qoidalariga rioya qilish, ma'lumotlarni shifrlash va kuchli parollardan foydalanish har qanday loyiha uchun ustuvor vazifa hisoblanadi."
   ],
 
   hard: [
@@ -57,6 +77,21 @@ const passages = {
     '"JSON" - ma\'lumotlarni kalit va qiymat ko\'rinishida ifodalash uchun ishlatiladigan matn formati.',
 
     '"TypeScript" - ma\'lumotlar turlarini belgilash imkonini beradigan va JavaScript asosida yaratilgan dasturlash tili.'
+    '"Socket.io" - real vaqt rejimida server va mijoz o\'rtasida ikki tomonlama aloqa o\'rnatish uchun ishlatiladigan JavaScript kutubxonasi.',
+    '"Express.js" - Node.js uchun mo\'ljallangan tezkor va qulay veb-ilovalar yaratish freymvorki.',
+    '"PostgreSQL" - murakkab va katta hajmli ma\'lumotlar bilan ishlaydigan kuchli obyekt-releatsion ma\'lumotlar bazasi tizimi.',
+    '"Tailwind CSS" - tayyor klasslar yordamida tezkor va zamonaviy dizayn yaratishga imkon beruvchi uslublar kutubxonasi.',
+    '"Docker" - ilovalarni izolyatsiya qilingan muhitda ishga tushirish va ularni istalgan joyga oson ko\'chirish uchun konteynerlashtirish platformasi.',
+    '"Redux" - React ilovalarida global holatni (state) boshqarish va tartibga solish uchun ishlatiladigan kutubxona.',
+    '"Linux" - dasturlash, serverlarni boshqarish va xavfsizlikni ta\'minlash uchun eng ko\'p ishlatiladigan operatsion tizim yadro oilasi.',
+    '"Algorithm" - berilgan muammoni qadam-baqadam hal qilish uchun tuzilgan aniq ko\'rsatmalar ketma-ketligi.',
+    '"Asynchronous" - bir nechta jarayonlarni bir vaqtning o\'zida, bir-birini kutmagan holda bajarish imkonini beruvchi dasturlash yondashuvi.',
+    '"Authentication" - foydalanuvchining shaxsini tasdiqlash va uning tizimga kirish huquqiga ega ekanligini tekshirish jarayoni.',
+    '"WebSockets" - brauzer va server o\'rtasida doimiy ochiq bo\'ladigan va ma\'lumotlarni darhol uzatuvchi aloqa protokoli.',
+    '"Component" - qayta foydalanish mumkin bo\'lgan, alohida vazifani bajaruvchi interfeys yoki kod bo\'lagi.',
+    '"Repository" - dastur kodlari, fayllar va ularning o\'zgarish tarixi saqlanadigan markaziy ombor yoki loyiha papkasi.',
+    '"Middleware" - so\'rov va javob jarayonlari orasida ishlaydigan, ma\'lumotlarni tekshiruvchi yoki o\'zgartiruvchi dasturiy qatlam.',
+    '"Debugging" - dastur kodidagi xatolar, nosozliklar va kutilmagan to\'qnashuvlarni topib bartaraf etish jarayoni.'
   ]
 };
 
