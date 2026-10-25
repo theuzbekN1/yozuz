@@ -9,7 +9,7 @@ const passages = {
     "do'stlar bilan birgalikda ishlash juda maroqli har kim o'z fikrini aytadi va boshqalarning fikrini tinglaydi shunday qilib yangi g'oyalar topish va muammolarni hal qilish mumkin",
     "yangi bilimlarni o'rganish uchun ko'p vaqt kerak bo'lishi shart emas har kuni ozgina harakat qilish va o'rgangan narsalarni takrorlash yaxshi natija beradi",
     "men kelajakda foydali dasturlar yaratishni xohlayman odamlar foydalanadigan saytlar va ilovalar yaratish uchun dasturlashni o'rganaman va ko'proq amaliyot qilaman",
-    "tabiatni asrash har bir insonning vazifasidir daraxt ekish suvni tejash va atrofni toza saqlash orqali biz yashaydigan joyni yanada chiroyli qilishimiz mumkin"
+    "tabiatni asrash har bir insonning vazifasidir daraxt ekish suvni tejash va atrofni toza saqlash orqali biz yashaydigan joyni yanada chiroyli qilishimiz mumkin",
     "kompyuterda kod yozish juda qiziqarli mashg'ulot hisoblanadi har kuni yangi buyruqlarni o'rganib kichik dasturlar tuzaman",
     "sayt yaratish uchun html va css tillarini bilish muhim ularni o'rganish boshida oson va tushunarli bo'ladi",
     "dasturlashda xatolar chiqishi tabiiy hol ularni topib to'g'rilash orqali tajriba orttiramiz va tezroq o'rganamiz",
@@ -32,7 +32,7 @@ const passages = {
     "Veb-dasturlashda HTML sahifa tuzilishini yaratadi, CSS uning ko'rinishini belgilaydi, JavaScript esa foydalanuvchi harakatlariga javob beradigan imkoniyatlarni qo'shadi.",
     "Yaxshi dastur foydalanuvchiga tushunarli, tezkor va qulay bo'lishi kerak. Interfeysni sinab ko'rish va foydalanuvchilarning fikrlarini tinglash sifatni yaxshilaydi.",
     "Ma'lumotlarni tartibli saqlash va kerakli paytda tez topish ko'plab dasturlar uchun muhimdir. To'g'ri rejalashtirilgan ma'lumotlar bazasi tizimning ishonchli ishlashiga yordam beradi.",
-    "Yangi til o'rganishda har kuni mashq qilish, yangi so'zlarni takrorlash va ularni gaplarda ishlatish foydali. Xatolarni tahlil qilish esa bilimlarni mustahkamlaydi."
+    "Yangi til o'rganishda har kuni mashq qilish, yangi so'zlarni takrorlash va ularni gaplarda ishlatish foydali. Xatolarni tahlil qilish esa bilimlarni mustahkamlaydi.",
     "Veb-ilovalar yaratishda frontend va backend qismlari birgalikda ishlaydi. Frontend foydalanuvchi ko'radigan interfeysni, backend esa server va ma'lumotlar bazasini boshqaradi.",
     "Ma'lumotlar bazasi bilan ishlashda SQL so'rovlaridan foydalaniladi. Jadvallar orasidagi bog'liqlikni to'g'ri tuzish dasturning xavfsiz va tez ishlashini ta'minlaydi.",
     "Git va GitHub yordamida dasturchilar o'z kodlarini xavfsiz saqlashadi va boshqa jamoa a'zolari bilan birgalikda yagona loyiha ustida ishlash imkoniyatiga ega bo'ladilar.",
@@ -76,7 +76,7 @@ const passages = {
 
     '"JSON" - ma\'lumotlarni kalit va qiymat ko\'rinishida ifodalash uchun ishlatiladigan matn formati.',
 
-    '"TypeScript" - ma\'lumotlar turlarini belgilash imkonini beradigan va JavaScript asosida yaratilgan dasturlash tili.'
+    '"TypeScript" - ma\'lumotlar turlarini belgilash imkonini beradigan va JavaScript asosida yaratilgan dasturlash tili.',
     '"Socket.io" - real vaqt rejimida server va mijoz o\'rtasida ikki tomonlama aloqa o\'rnatish uchun ishlatiladigan JavaScript kutubxonasi.',
     '"Express.js" - Node.js uchun mo\'ljallangan tezkor va qulay veb-ilovalar yaratish freymvorki.',
     '"PostgreSQL" - murakkab va katta hajmli ma\'lumotlar bilan ishlaydigan kuchli obyekt-releatsion ma\'lumotlar bazasi tizimi.',
