@@ -180,7 +180,13 @@ function renderKeyboard() {
 
       keyElement.className = "key";
       keyElement.textContent = item.label;
+      
       keyElement.dataset.key = item.key;
+
+      if (item.shift) {
+        keyElement.dataset.shift = item.shift;
+      }
+      
 
       if (item.wide) {
         keyElement.classList.add("wide");
