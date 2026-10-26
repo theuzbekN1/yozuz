@@ -82,6 +82,7 @@ body {
 .settings label {
   font-size: 14px;
   font-weight: 600;
+  color: #625879;
 }
 
 select,
@@ -90,12 +91,20 @@ button {
 }
 
 select {
-  padding: 11px 14px;
-  border: 1px solid var(--border);
+  padding: 12px 14px;
+  border: 1px solid #e5defa;
   border-radius: 10px;
   background: white;
-  color: var(--text);
-  outline-color: var(--purple);
+  color: #35245f;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+select:focus {
+  border-color: #6d4aff;
+  box-shadow: 0 0 0 3px #6d4aff1a;
+  outline: none;
 }
 
 button {
@@ -213,10 +222,199 @@ button {
   box-shadow: inset 0 -2px var(--purple);
 }
 
+.text-display span.correct.pop {
+  animation: letterPop 180ms ease-out;
+}
+
+.text-display span.incorrect.shake {
+  animation: letterShake 200ms ease-in-out;
+}
+
+@keyframes letterPop {
+  0% {
+    background: #e5dcff;
+  }
+
+  50% {
+    background: #c9b8ff;
+  }
+
+  100% {
+    background: transparent;
+  }
+}
+
+@keyframes letterShake {
+  0%, 100% {
+    box-shadow: 0 0 0 transparent;
+  }
+
+  25% {
+    box-shadow: -2px 0 0 var(--red);
+  }
+
+  75% {
+    box-shadow: 2px 0 0 var(--red);
+  }
+}
+
 .hint {
   margin-top: 22px;
 }
 
+/* Klaviatura yo‘riqnomasi */
+.keyboard-helper {
+  width: 100%;
+  margin: 24px auto 0;
+  padding: 22px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 8px 35px #38207708;
+}
+
+.keyboard-heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.keyboard-heading h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.keyboard-heading p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  user-select: none;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 0 2px;
+  border: 1px solid #e7e2f3;
+  border-radius: 7px;
+  background: #fff;
+  color: #55516a;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 0 #e7e2f3;
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.key.wide {
+  flex: 1.5;
+  font-size: 10px;
+}
+
+.key.extra-wide {
+  flex: 2;
+  font-size: 10px;
+}
+
+.key.space {
+  flex: 5;
+}
+
+.key.next-key {
+  background: #e8deff;
+  color: #6d35d5;
+  border-color: #a989f5;
+  box-shadow: 0 2px 0 #b9a0f3;
+  transform: translateY(-2px);
+}
+
+.key.pressed-correct {
+  background: #c8f7dc;
+  border-color: #40bf7c;
+  color: #146c3c;
+  box-shadow: 0 2px 0 #40bf7c;
+}
+
+.key.pressed-wrong {
+  background: #ffe0e0;
+  border-color: #ef7777;
+  color: #b42323;
+  animation: keyError 180ms ease-in-out;
+}
+
+@keyframes keyError {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  30% {
+    transform: translateX(-2px);
+  }
+
+  70% {
+    transform: translateX(2px);
+  }
+}
+
+.keyboard-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.keyboard-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.next-dot {
+  background: #a989f5;
+}
+
+.correct-dot {
+  background: #40bf7c;
+}
+
+.wrong-dot {
+  background: #ef7777;
+}
+
+/* Test natijasi */
 .result {
   margin-top: 22px;
   padding: 25px;
@@ -277,74 +475,48 @@ footer {
   .text-display {
     font-size: 18px;
   }
-}
-.settings select {
-  padding: 12px 14px;
-  border: 1px solid #e5defa;
-  border-radius: 10px;
-  background: #fff;
-  color: #35245f;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
 
-.settings select:focus {
-  border-color: #6d4aff;
-  box-shadow: 0 0 0 3px #6d4aff1a;
-  outline: none;
-}
+  .keyboard-helper {
+    padding: 14px 8px;
+  }
 
-.settings label {
-  color: #625879;
-}
+  .keyboard-heading h2 {
+    font-size: 16px;
+  }
 
+  .virtual-keyboard {
+    gap: 5px;
+  }
 
-/* Harflar animatsiyasi */
-.text-display span {
-  position: relative;
-  border-radius: 3px;
-}
+  .keyboard-row {
+    gap: 3px;
+  }
 
-.text-display span.correct {
-  color: var(--green);
-}
+  .key {
+    height: 34px;
+    border-radius: 5px;
+    font-size: 10px;
+  }
 
-.text-display span.incorrect {
-  color: white;
-  background: var(--red);
-}
+  .key.wide,
+  .key.extra-wide {
+    font-size: 8px;
+  }
 
-.text-display span.current {
-  background: var(--purple-light);
-  box-shadow: inset 0 -2px var(--purple);
-}
-
-/* To‘g‘ri yozilgan harf */
-.text-display span.correct.pop {
-  animation: letterPop 180ms ease-out;
-}
-
-/* Xato yozilgan harf */
-.text-display span.incorrect.shake {
-  animation: letterShake 200ms ease-in-out;
-}
-
-@keyframes letterPop {
-  0% { background: #e5dcff; }
-  50% { background: #c9b8ff; }
-  100% { background: transparent; }
-}
-
-@keyframes letterShake {
-  0%, 100% { box-shadow: 0 0 0 transparent; }
-  25% { box-shadow: -2px 0 0 var(--red); }
-  75% { box-shadow: 2px 0 0 var(--red); }
+  .keyboard-legend {
+    gap: 10px;
+    font-size: 10px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .text-display span.pop,
-  .text-display span.shake {
+  .text-display span.shake,
+  .key.pressed-wrong {
     animation: none;
+  }
+
+  .key {
+    transition: none;
   }
 }
