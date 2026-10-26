@@ -47,35 +47,20 @@ const passages = {
 
   hard: [
     '"GitHub" - dasturchilar kodlarini saqlash, loyihalarni boshqarish va jamoa bilan hamkorlik qilish uchun foydalanadigan platforma.',
-
     '"JavaScript" - veb-sahifalarga interaktiv imkoniyatlar qo\'shadigan dasturlash tili.',
-
     '"Python" - veb-dasturlash, ma\'lumotlarni tahlil qilish va sun\'iy intellekt loyihalarida ishlatiladigan dasturlash tili.',
-
     '"HTML" - veb-sahifaning asosiy tuzilishini belgilaydigan belgilash tili.',
-
     '"CSS" - veb-sahifaning ranglari, o\'lchamlari va joylashuvini boshqaradigan uslublar tili.',
-
     '"Git" - fayllardagi o\'zgarishlarni kuzatish va loyihaning oldingi holatlarini saqlash imkonini beradigan versiyalarni boshqarish tizimi.',
-
     '"API" - dasturlar o\'rtasida ma\'lumot almashish imkonini beradigan interfeys.',
-
     '"PostgreSQL" - ma\'lumotlarni jadvallarda saqlash va boshqarish uchun ishlatiladigan ma\'lumotlar bazasi tizimi.',
-
     '"Frontend" - foydalanuvchi bevosita ko\'radigan va ishlatadigan dasturiy qism.',
-
     '"Backend" - serverdagi mantiq, ma\'lumotlarni qayta ishlash va ma\'lumotlar bazasi bilan aloqani boshqaradigan dasturiy qism.',
-
     '"Firebase" - foydalanuvchilarni ro\'yxatdan o\'tkazish va ma\'lumotlarni saqlash kabi xizmatlarni taqdim etadigan bulutli platforma.',
-
     '"React" - foydalanuvchi interfeyslarini yaratish uchun ishlatiladigan JavaScript kutubxonasi.',
-
     '"Node.js" - JavaScript kodini brauzerdan tashqarida, jumladan serverda bajarish imkonini beradigan muhit.',
-
     '"SQL" - relyatsion ma\'lumotlar bazalaridagi ma\'lumotlar bilan ishlash uchun ishlatiladigan so\'rovlar tili.',
-
     '"JSON" - ma\'lumotlarni kalit va qiymat ko\'rinishida ifodalash uchun ishlatiladigan matn formati.',
-
     '"TypeScript" - ma\'lumotlar turlarini belgilash imkonini beradigan va JavaScript asosida yaratilgan dasturlash tili.',
     '"Socket.io" - real vaqt rejimida server va mijoz o\'rtasida ikki tomonlama aloqa o\'rnatish uchun ishlatiladigan JavaScript kutubxonasi.',
     '"Express.js" - Node.js uchun mo\'ljallangan tezkor va qulay veb-ilovalar yaratish freymvorki.',
@@ -96,7 +81,6 @@ const passages = {
 };
 
 const difficultySelect = document.getElementById("difficulty");
-
 const durationSelect = document.getElementById("duration");
 const restartBtn = document.getElementById("restartBtn");
 const tryAgainBtn = document.getElementById("tryAgainBtn");
@@ -113,6 +97,8 @@ const finalWpm = document.getElementById("finalWpm");
 const finalAccuracy = document.getElementById("finalAccuracy");
 const finalErrors = document.getElementById("finalErrors");
 
+const virtualKeyboard = document.getElementById("virtualKeyboard");
+
 let targetText = "";
 let typedText = "";
 let timeLeft = 30;
@@ -125,6 +111,55 @@ let correctedErrors = 0;
 let errorPositions = new Set();
 let correctedPositions = new Set();
 
+/* Ekran klaviaturasining qatorlari */
+const keyboardRows = [
+  [
+    { label: "`", key: "`" },
+    { label: "1", key: "1" },
+    { label: "2", key: "2" },
+    { label: "3", key: "3" },
+    { label: "4", key: "4" },
+    { label: "5", key: "5" },
+    { label: "6", key: "6" },
+    { label: "7", key: "7" },
+    { label: "8", key: "8" },
+    { label: "9", key: "9" },
+    { label: "0", key: "0" },
+    { label: "-", key: "-" },
+    { label: "=", key: "=" },
+    { label: "⌫", key: "Backspace", wide: true }
+  ],
+  [
+    { label: "Tab", key: "Tab", wide: true },
+    ...[..."qwertyuiop"].map(key => ({ label: key, key })),
+    { label: "[", key: "[" },
+    { label: "]", key: "]" },
+    { label: "\\", key: "\\", wide: true }
+  ],
+  [
+    { label: "Caps", key: "CapsLock", wide: true },
+    ...[..."asdfghjkl"].map(key => ({ label: key, key })),
+    { label: ";", key: ";" },
+    { label: "'", key: "'" },
+    { label: "Enter", key: "Enter", wide: true }
+  ],
+  [
+    { label: "Shift", key: "Shift", extraWide: true },
+    ...[..."zxcvbnm"].map(key => ({ label: key, key })),
+    { label: ",", key: "," },
+    { label: ".", key: "." },
+    { label: "/", key: "/" },
+    { label: "Shift", key: "Shift", extraWide: true }
+  ],
+  [
+    { label: "Ctrl", key: "Control", wide: true },
+    { label: "Alt", key: "Alt", wide: true },
+    { label: "SPACE", key: " ", space: true },
+    { label: "Alt", key: "Alt", wide: true },
+    { label: "Ctrl", key: "Control", wide: true }
+  ]
+];
+
 function choosePassage() {
   const difficulty = difficultySelect.value;
   const list = passages[difficulty];
@@ -132,7 +167,103 @@ function choosePassage() {
   return list[Math.floor(Math.random() * list.length)];
 }
 
+/* Klaviaturani ekranga chiqarish */
+function renderKeyboard() {
+  virtualKeyboard.replaceChildren();
 
+  keyboardRows.forEach(rowKeys => {
+    const row = document.createElement("div");
+    row.className = "keyboard-row";
+
+    rowKeys.forEach(item => {
+      const keyElement = document.createElement("div");
+
+      keyElement.className = "key";
+      keyElement.textContent = item.label;
+      keyElement.dataset.key = item.key;
+
+      if (item.wide) {
+        keyElement.classList.add("wide");
+      }
+
+      if (item.extraWide) {
+        keyElement.classList.add("extra-wide");
+      }
+
+      if (item.space) {
+        keyElement.classList.add("space");
+      }
+
+      row.appendChild(keyElement);
+    });
+
+    virtualKeyboard.appendChild(row);
+  });
+}
+
+/* Keyingi belgiga mos klavishani topish */
+function findKeyboardKey(character) {
+  if (character === undefined || character === null) {
+    return null;
+  }
+
+  const normalizedCharacter = character.toLowerCase();
+
+  const keys = virtualKeyboard.querySelectorAll(".key");
+
+  for (const keyElement of keys) {
+    const keyValue = keyElement.dataset.key;
+
+    if (keyValue.toLowerCase() === normalizedCharacter) {
+      return keyElement;
+    }
+  }
+
+  return null;
+}
+
+/* Klaviatura ranglarini yangilash */
+function updateKeyboard(pressedKey = null, isCorrect = true) {
+  const keys = virtualKeyboard.querySelectorAll(".key");
+
+  keys.forEach(keyElement => {
+    keyElement.classList.remove(
+      "next-key",
+      "pressed-correct",
+      "pressed-wrong"
+    );
+  });
+
+  if (testFinished) {
+    return;
+  }
+
+  const nextCharacter = targetText[typedText.length];
+  const nextKey = findKeyboardKey(nextCharacter);
+
+  if (nextKey) {
+    nextKey.classList.add("next-key");
+  }
+
+  if (pressedKey !== null) {
+    const pressedElement = findKeyboardKey(pressedKey);
+
+    if (pressedElement) {
+      pressedElement.classList.add(
+        isCorrect ? "pressed-correct" : "pressed-wrong"
+      );
+
+      window.setTimeout(() => {
+        pressedElement.classList.remove(
+          "pressed-correct",
+          "pressed-wrong"
+        );
+      }, 180);
+    }
+  }
+}
+
+/* Matnni belgilar bo‘yicha chiqarish */
 function renderText(animatedIndex = -1) {
   textDisplay.replaceChildren();
 
@@ -145,7 +276,6 @@ function renderText(animatedIndex = -1) {
 
       span.classList.add(isCorrect ? "correct" : "incorrect");
 
-      // Faqat hozir yozilgan harfni animatsiya qilamiz
       if (i === animatedIndex) {
         span.classList.add(isCorrect ? "pop" : "shake");
       }
@@ -166,7 +296,7 @@ function renderText(animatedIndex = -1) {
   }
 }
 
-
+/* Statistika hisoblash */
 function calculateStats() {
   let correct = 0;
   let remainingErrors = 0;
@@ -177,13 +307,10 @@ function calculateStats() {
     } else {
       remainingErrors++;
 
-      // Har bir xato belgining pozitsiyasini eslab qolamiz
       errorPositions.add(i);
     }
   }
 
-  // Oldin xato yozilgan belgi endi to‘g‘ri yozilgan bo‘lsa,
-  // uni faqat bir marta tuzatilgan xato sifatida hisoblaymiz.
   for (const position of errorPositions) {
     if (
       position < typedText.length &&
@@ -222,8 +349,11 @@ function calculateStats() {
   };
 }
 
+/* Testni boshlash */
 function startTest() {
-  if (testStarted || testFinished) return;
+  if (testStarted || testFinished) {
+    return;
+  }
 
   testStarted = true;
   startTime = Date.now();
@@ -231,10 +361,13 @@ function startTest() {
 
   timerInterval = setInterval(() => {
     timeLeft--;
+
     timerDisplay.textContent = timeLeft;
 
     const elapsed = totalDuration - timeLeft;
-    progressBar.style.width = `${(elapsed / totalDuration) * 100}%`;
+
+    progressBar.style.width =
+      `${(elapsed / totalDuration) * 100}%`;
 
     calculateStats();
 
@@ -244,8 +377,11 @@ function startTest() {
   }, 1000);
 }
 
+/* Testni yakunlash */
 function finishTest() {
-  if (testFinished) return;
+  if (testFinished) {
+    return;
+  }
 
   testFinished = true;
   clearInterval(timerInterval);
@@ -257,13 +393,16 @@ function finishTest() {
 
   finalWpm.textContent = stats.wpm;
   finalAccuracy.textContent = `${stats.accuracy}%`;
+
   finalErrors.textContent =
-  `${stats.correct} / ${stats.correctedErrors} / ${stats.errors}`;
-  
+    `${stats.correct} / ${stats.correctedErrors} / ${stats.errors}`;
 
   resultSection.classList.remove("hidden");
+
+  updateKeyboard();
 }
 
+/* Testni qayta boshlash */
 function resetTest() {
   clearInterval(timerInterval);
 
@@ -271,10 +410,11 @@ function resetTest() {
   timeLeft = totalDuration;
   targetText = choosePassage();
   typedText = "";
-  typedText = "";
+
   correctedErrors = 0;
   errorPositions = new Set();
   correctedPositions = new Set();
+
   startTime = null;
   testStarted = false;
   testFinished = false;
@@ -282,17 +422,26 @@ function resetTest() {
   timerDisplay.textContent = timeLeft;
   wpmDisplay.textContent = "0";
   accuracyDisplay.textContent = "100%";
-  errorsDisplay.textContent = "0";
+  errorsDisplay.textContent = "0 / 0 / 0";
+
   progressBar.style.width = "0%";
   statusDisplay.textContent = "Boshlash uchun yozing";
+
+  textDisplay.setAttribute(
+    "aria-label",
+    "Matnni shu yerga yozing"
+  );
 
   resultSection.classList.add("hidden");
 
   renderText();
+  updateKeyboard();
+
   textDisplay.focus();
 }
 
-textDisplay.addEventListener("keydown", (event) => {
+/* Klaviaturada yozish */
+textDisplay.addEventListener("keydown", event => {
   if (testFinished) {
     event.preventDefault();
     return;
@@ -304,17 +453,24 @@ textDisplay.addEventListener("keydown", (event) => {
     event.altKey ||
     event.key === "Tab"
   ) {
-    if (event.key === "Tab") event.preventDefault();
+    if (event.key === "Tab") {
+      event.preventDefault();
+    }
+
     return;
   }
 
   if (event.key === "Backspace") {
     event.preventDefault();
+
     if (typedText.length > 0) {
       typedText = typedText.slice(0, -1);
+
       renderText();
       calculateStats();
+      updateKeyboard();
     }
+
     return;
   }
 
@@ -323,36 +479,49 @@ textDisplay.addEventListener("keydown", (event) => {
     return;
   }
 
-  if (event.key.length !== 1) return;
+  if (event.key.length !== 1) {
+    return;
+  }
 
   event.preventDefault();
 
-  if (typedText.length >= targetText.length) return;
+  if (typedText.length >= targetText.length) {
+    return;
+  }
 
   startTest();
+
+  const expectedChar = targetText[typedText.length];
+  const isCorrect = event.key === expectedChar;
 
   typedText += event.key;
 
   renderText(typedText.length - 1);
   calculateStats();
+  updateKeyboard(event.key, isCorrect);
 
   if (typedText.length >= targetText.length) {
     finishTest();
   }
 });
 
-textDisplay.addEventListener("paste", (event) => {
+/* Matnni joylash orqali kiritishni o‘chirish */
+textDisplay.addEventListener("paste", event => {
   event.preventDefault();
 });
 
+/* Matn ustiga bosilganda fokus berish */
 textDisplay.addEventListener("click", () => {
   textDisplay.focus();
 });
 
+/* Tugmalar */
 restartBtn.addEventListener("click", resetTest);
 tryAgainBtn.addEventListener("click", resetTest);
 
 durationSelect.addEventListener("change", resetTest);
 difficultySelect.addEventListener("change", resetTest);
 
+/* Dastlabki ishga tushirish */
+renderKeyboard();
 resetTest();
