@@ -1,3 +1,4 @@
+
 const passages = {
   easy: [
     "bugun men yangi sayt yaratishni o'rganyapman bu ish menga juda yoqadi har kuni ozgina mashq qilsam tezroq yozishni o'rganaman kompyuterda ishlash va yangi narsalarni sinab ko'rish juda qiziq",
@@ -111,59 +112,71 @@ let correctedErrors = 0;
 let errorPositions = new Set();
 let correctedPositions = new Set();
 
+let pressedKeyTimeout = null;
+
 /* Ekran klaviaturasining qatorlari */
 const keyboardRows = [
   [
-    { label: "`", key: "`" },
-    { label: "1", key: "1" },
-    { label: "2", key: "2" },
-    { label: "3", key: "3" },
-    { label: "4", key: "4" },
-    { label: "5", key: "5" },
-    { label: "6", key: "6" },
-    { label: "7", key: "7" },
-    { label: "8", key: "8" },
-    { label: "9", key: "9" },
-    { label: "0", key: "0" },
-    { label: "-", key: "-" },
-    { label: "=", key: "=" },
+    { label: "`", key: "`", shift: "~" },
+    { label: "1", key: "1", shift: "!" },
+    { label: "2", key: "2", shift: "@" },
+    { label: "3", key: "3", shift: "#" },
+    { label: "4", key: "4", shift: "$" },
+    { label: "5", key: "5", shift: "%" },
+    { label: "6", key: "6", shift: "^" },
+    { label: "7", key: "7", shift: "&" },
+    { label: "8", key: "8", shift: "*" },
+    { label: "9", key: "9", shift: "(" },
+    { label: "0", key: "0", shift: ")" },
+    { label: "-", key: "-", shift: "_" },
+    { label: "=", key: "=", shift: "+" },
     { label: "⌫", key: "Backspace", wide: true }
   ],
   [
     { label: "Tab", key: "Tab", wide: true },
-    ...[..."qwertyuiop"].map(key => ({ label: key, key })),
-    { label: "[", key: "[" },
-    { label: "]", key: "]" },
-    { label: "\\", key: "\\", wide: true }
+    ...[..."qwertyuiop"].map(key => ({
+      label: key.toUpperCase(),
+      key,
+      shift: key.toUpperCase()
+    })),
+    { label: "{", key: "[", shift: "{" },
+    { label: "}", key: "]", shift: "}" },
+    { label: "|", key: "\\", shift: "|", wide: true }
   ],
   [
-    { label: "Caps", key: "CapsLock", wide: true },
-    ...[..."asdfghjkl"].map(key => ({ label: key, key })),
-    { label: ";", key: ";" },
-    { label: "'", key: "'" },
+    { label: "Caps Lock", key: "CapsLock", wide: true },
+    ...[..."asdfghjkl"].map(key => ({
+      label: key.toUpperCase(),
+      key,
+      shift: key.toUpperCase()
+    })),
+    { label: ";", key: ";", shift: ":" },
+    { label: "'", key: "'", shift: '"' },
     { label: "Enter", key: "Enter", wide: true }
   ],
   [
     { label: "Shift", key: "Shift", extraWide: true },
-    ...[..."zxcvbnm"].map(key => ({ label: key, key })),
-    { label: ",", key: "," },
-    { label: ".", key: "." },
-    { label: "/", key: "/" },
+    ...[..."zxcvbnm"].map(key => ({
+      label: key.toUpperCase(),
+      key,
+      shift: key.toUpperCase()
+    })),
+    { label: "<", key: ",", shift: "<" },
+    { label: ">", key: ".", shift: ">" },
+    { label: "?", key: "/", shift: "?" },
     { label: "Shift", key: "Shift", extraWide: true }
   ],
   [
     { label: "Ctrl", key: "Control", wide: true },
     { label: "Alt", key: "Alt", wide: true },
     { label: "SPACE", key: " ", space: true },
-    { label: "Alt", key: "Alt", wide: true },
-    { label: "Ctrl", key: "Control", wide: true }
+    { label: "Ctrl", key: "Control", wide: true },
+    { label: "Alt", key: "Alt", wide: true }
   ]
 ];
 
 function choosePassage() {
-  const difficulty = difficultySelect.value;
-  const list = passages[difficulty];
-
+  const list = passages[difficultySelect.value];
   return list[Math.floor(Math.random() * list.length)];
 }
 
@@ -180,13 +193,11 @@ function renderKeyboard() {
 
       keyElement.className = "key";
       keyElement.textContent = item.label;
-      
       keyElement.dataset.key = item.key;
 
       if (item.shift) {
         keyElement.dataset.shift = item.shift;
       }
-      
 
       if (item.wide) {
         keyElement.classList.add("wide");
@@ -207,72 +218,90 @@ function renderKeyboard() {
   });
 }
 
-/* Keyingi belgiga mos klavishani topish */
+/* Kerakli belgiga mos klavishni topish */
 function findKeyboardKey(character) {
-    const keys = [...document.querySelectorAll(".key")];
+  const keys = [...virtualKeyboard.querySelectorAll(".key")];
 
-    return keys.find(key => {
-        return key.dataset.key === character.toLowerCase()
-            || key.dataset.shift === character;
-    });
+  return keys.find(key => key.dataset.shift === character) ||
+    keys.find(key => key.dataset.key === character.toLowerCase());
 }
 
+/* Shift kerakligini tekshirish */
+function characterNeedsShift(character, keyElement) {
+  if (!keyElement) return false;
+
+  return (
+    character !== character.toLowerCase() ||
+    keyElement.dataset.shift === character
+  );
+}
+
+/* Klaviatura ranglarini yangilash */
 function updateKeyboard(pressedKey = null, isCorrect = null) {
-    const keys = [...document.querySelectorAll(".key")];
+  const keys = [...virtualKeyboard.querySelectorAll(".key")];
 
-    keys.forEach(key => {
-        key.classList.remove(
-            "next-key",
-            "shift-required",
-            "pressed-correct",
-            "pressed-wrong"
-        );
-    });
+  keys.forEach(key => {
+    key.classList.remove(
+      "next-key",
+      "shift-required",
+      "pressed-correct",
+      "pressed-wrong"
+    );
+  });
 
-    const nextCharacter = passage[currentIndex];
+  const nextCharacter = targetText[typedText.length];
 
-    if (nextCharacter === undefined) return;
-
+  if (nextCharacter !== undefined) {
     const targetKey = findKeyboardKey(nextCharacter);
 
     if (targetKey) {
-        targetKey.classList.add("next-key");
+      targetKey.classList.add("next-key");
 
-        // Katta harf yoki Shift orqali yoziladigan belgi
-        const needsShift =
-            nextCharacter !== nextCharacter.toLowerCase() ||
-            targetKey.dataset.shift === nextCharacter;
-
-        if (needsShift) {
-            document.querySelectorAll(".key").forEach(key => {
-                if (key.dataset.key === "shift") {
-                    key.classList.add("shift-required");
-                }
-            });
-        }
+      if (characterNeedsShift(nextCharacter, targetKey)) {
+        virtualKeyboard
+          .querySelectorAll('[data-key="Shift"]')
+          .forEach(shiftKey => {
+            shiftKey.classList.add("shift-required");
+          });
+      }
     }
+  }
 
-    if (pressedKey) {
-        const pressed = keys.find(key =>
-            key.dataset.key === pressedKey.toLowerCase()
-        );
+  if (pressedKey !== null) {
+    const normalizedKey =
+      pressedKey === " " ? " " : pressedKey.toLowerCase();
 
-        if (pressed) {
-            pressed.classList.add(
-                isCorrect ? "pressed-correct" : "pressed-wrong"
-            );
-        }
+    const pressedElement = keys.find(key => {
+      return key.dataset.key.toLowerCase() === normalizedKey;
+    });
+
+    if (pressedElement) {
+      pressedElement.classList.add(
+        isCorrect ? "pressed-correct" : "pressed-wrong"
+      );
+
+      if (pressedKey !== pressedKey.toLowerCase()) {
+        virtualKeyboard
+          .querySelectorAll('[data-key="Shift"]')
+          .forEach(shiftKey => {
+            shiftKey.classList.add("pressed-correct");
+          });
+      }
     }
+  }
 
+  if (pressedKeyTimeout) {
+    clearTimeout(pressedKeyTimeout);
+  }
 
-      window.setTimeout(() => {
-        pressedElement.classList.remove(
-          "pressed-correct",
-          "pressed-wrong"
-        );
-      }, 180);
-    }
+  pressedKeyTimeout = window.setTimeout(() => {
+    keys.forEach(key => {
+      key.classList.remove("pressed-correct", "pressed-wrong");
+    });
 
+    updateKeyboard();
+  }, 180);
+}
 
 /* Matnni belgilar bo‘yicha chiqarish */
 function renderText(animatedIndex = -1) {
@@ -317,7 +346,6 @@ function calculateStats() {
       correct++;
     } else {
       remainingErrors++;
-
       errorPositions.add(i);
     }
   }
@@ -362,9 +390,7 @@ function calculateStats() {
 
 /* Testni boshlash */
 function startTest() {
-  if (testStarted || testFinished) {
-    return;
-  }
+  if (testStarted || testFinished) return;
 
   testStarted = true;
   startTime = Date.now();
@@ -372,7 +398,6 @@ function startTest() {
 
   timerInterval = setInterval(() => {
     timeLeft--;
-
     timerDisplay.textContent = timeLeft;
 
     const elapsed = totalDuration - timeLeft;
@@ -390,9 +415,7 @@ function startTest() {
 
 /* Testni yakunlash */
 function finishTest() {
-  if (testFinished) {
-    return;
-  }
+  if (testFinished) return;
 
   testFinished = true;
   clearInterval(timerInterval);
@@ -409,13 +432,17 @@ function finishTest() {
     `${stats.correct} / ${stats.correctedErrors} / ${stats.errors}`;
 
   resultSection.classList.remove("hidden");
-
   updateKeyboard();
 }
 
 /* Testni qayta boshlash */
 function resetTest() {
   clearInterval(timerInterval);
+
+  if (pressedKeyTimeout) {
+    clearTimeout(pressedKeyTimeout);
+    pressedKeyTimeout = null;
+  }
 
   totalDuration = Number(durationSelect.value);
   timeLeft = totalDuration;
@@ -458,16 +485,12 @@ textDisplay.addEventListener("keydown", event => {
     return;
   }
 
-  if (
-    event.ctrlKey ||
-    event.metaKey ||
-    event.altKey ||
-    event.key === "Tab"
-  ) {
-    if (event.key === "Tab") {
-      event.preventDefault();
-    }
+  if (event.ctrlKey || event.metaKey || event.altKey) {
+    return;
+  }
 
+  if (event.key === "Tab") {
+    event.preventDefault();
     return;
   }
 
