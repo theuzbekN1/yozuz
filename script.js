@@ -237,6 +237,7 @@ function characterNeedsShift(character, keyElement) {
 }
 
 /* Klaviatura ranglarini yangilash */
+
 function updateKeyboard(pressedKey = null, isCorrect = null) {
   const keys = [...virtualKeyboard.querySelectorAll(".key")];
 
@@ -249,6 +250,7 @@ function updateKeyboard(pressedKey = null, isCorrect = null) {
     );
   });
 
+  // Keyingi yozilishi kerak bo'lgan belgi
   const nextCharacter = targetText[typedText.length];
 
   if (nextCharacter !== undefined) {
@@ -257,7 +259,12 @@ function updateKeyboard(pressedKey = null, isCorrect = null) {
     if (targetKey) {
       targetKey.classList.add("next-key");
 
-      if (characterNeedsShift(nextCharacter, targetKey)) {
+      // Katta harf yoki Shift bilan yoziladigan belgi
+      const needsShift =
+        nextCharacter !== nextCharacter.toLowerCase() ||
+        targetKey.dataset.shift === nextCharacter;
+
+      if (needsShift) {
         virtualKeyboard
           .querySelectorAll('[data-key="Shift"]')
           .forEach(shiftKey => {
@@ -267,26 +274,31 @@ function updateKeyboard(pressedKey = null, isCorrect = null) {
     }
   }
 
+  // Bosilgan tugmani qisqa muddat yoritish
   if (pressedKey !== null) {
-    const normalizedKey =
-      pressedKey === " " ? " " : pressedKey.toLowerCase();
-
     const pressedElement = keys.find(key => {
-      return key.dataset.key.toLowerCase() === normalizedKey;
+      if (pressedKey === " ") {
+        return key.dataset.key === " ";
+      }
+
+      return key.dataset.key.toLowerCase() === pressedKey.toLowerCase();
     });
 
     if (pressedElement) {
       pressedElement.classList.add(
         isCorrect ? "pressed-correct" : "pressed-wrong"
       );
+    }
 
-      if (pressedKey !== pressedKey.toLowerCase()) {
-        virtualKeyboard
-          .querySelectorAll('[data-key="Shift"]')
-          .forEach(shiftKey => {
-            shiftKey.classList.add("pressed-correct");
-          });
-      }
+    // Katta harf yozilganda Shift ham yoritiladi
+    if (pressedKey !== pressedKey.toLowerCase()) {
+      virtualKeyboard
+        .querySelectorAll('[data-key="Shift"]')
+        .forEach(shiftKey => {
+          shiftKey.classList.add(
+            isCorrect ? "pressed-correct" : "pressed-wrong"
+          );
+        });
     }
   }
 
@@ -294,14 +306,13 @@ function updateKeyboard(pressedKey = null, isCorrect = null) {
     clearTimeout(pressedKeyTimeout);
   }
 
-  pressedKeyTimeout = window.setTimeout(() => {
-    keys.forEach(key => {
-      key.classList.remove("pressed-correct", "pressed-wrong");
-    });
-
-    updateKeyboard();
-  }, 180);
+  if (pressedKey !== null) {
+    pressedKeyTimeout = setTimeout(() => {
+      updateKeyboard();
+    }, 180);
+  }
 }
+
 
 /* Matnni belgilar bo‘yicha chiqarish */
 function renderText(animatedIndex = -1) {
