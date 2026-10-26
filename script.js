@@ -203,55 +203,61 @@ function renderKeyboard() {
 
 /* Keyingi belgiga mos klavishani topish */
 function findKeyboardKey(character) {
-  if (character === undefined || character === null) {
-    return null;
-  }
+    const keys = [...document.querySelectorAll(".key")];
 
-  const normalizedCharacter = character.toLowerCase();
-
-  const keys = virtualKeyboard.querySelectorAll(".key");
-
-  for (const keyElement of keys) {
-    const keyValue = keyElement.dataset.key;
-
-    if (keyValue.toLowerCase() === normalizedCharacter) {
-      return keyElement;
-    }
-  }
-
-  return null;
+    return keys.find(key => {
+        return key.dataset.key === character.toLowerCase()
+            || key.dataset.shift === character;
+    });
 }
 
-/* Klaviatura ranglarini yangilash */
-function updateKeyboard(pressedKey = null, isCorrect = true) {
-  const keys = virtualKeyboard.querySelectorAll(".key");
+function updateKeyboard(pressedKey = null, isCorrect = null) {
+    const keys = [...document.querySelectorAll(".key")];
 
-  keys.forEach(keyElement => {
-    keyElement.classList.remove(
-      "next-key",
-      "pressed-correct",
-      "pressed-wrong"
-    );
-  });
+    keys.forEach(key => {
+        key.classList.remove(
+            "next-key",
+            "shift-required",
+            "pressed-correct",
+            "pressed-wrong"
+        );
+    });
 
-  if (testFinished) {
-    return;
-  }
+    const nextCharacter = passage[currentIndex];
 
-  const nextCharacter = targetText[typedText.length];
-  const nextKey = findKeyboardKey(nextCharacter);
+    if (nextCharacter === undefined) return;
 
-  if (nextKey) {
-    nextKey.classList.add("next-key");
-  }
+    const targetKey = findKeyboardKey(nextCharacter);
 
-  if (pressedKey !== null) {
-    const pressedElement = findKeyboardKey(pressedKey);
+    if (targetKey) {
+        targetKey.classList.add("next-key");
 
-    if (pressedElement) {
-      pressedElement.classList.add(
-        isCorrect ? "pressed-correct" : "pressed-wrong"
-      );
+        // Katta harf yoki Shift orqali yoziladigan belgi
+        const needsShift =
+            nextCharacter !== nextCharacter.toLowerCase() ||
+            targetKey.dataset.shift === nextCharacter;
+
+        if (needsShift) {
+            document.querySelectorAll(".key").forEach(key => {
+                if (key.dataset.key === "shift") {
+                    key.classList.add("shift-required");
+                }
+            });
+        }
+    }
+
+    if (pressedKey) {
+        const pressed = keys.find(key =>
+            key.dataset.key === pressedKey.toLowerCase()
+        );
+
+        if (pressed) {
+            pressed.classList.add(
+                isCorrect ? "pressed-correct" : "pressed-wrong"
+            );
+        }
+    }
+
 
       window.setTimeout(() => {
         pressedElement.classList.remove(
@@ -260,8 +266,7 @@ function updateKeyboard(pressedKey = null, isCorrect = true) {
         );
       }, 180);
     }
-  }
-}
+
 
 /* Matnni belgilar bo‘yicha chiqarish */
 function renderText(animatedIndex = -1) {
