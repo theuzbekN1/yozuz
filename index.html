@@ -20,26 +20,26 @@
     </section>
 
     <section class="settings">
-  <label for="difficulty">Qiyinlik darajasi</label>
+      <label for="difficulty">Qiyinlik darajasi</label>
 
-  <select id="difficulty">
-    <option value="easy">🟢 Oson</option>
-    <option value="medium" selected>🟡 O‘rtacha</option>
-    <option value="hard">🔴 Qiyin</option>
-  </select>
+      <select id="difficulty">
+        <option value="easy">🟢 Oson</option>
+        <option value="medium" selected>🟡 O‘rtacha</option>
+        <option value="hard">🔴 Qiyin</option>
+      </select>
 
-  <label for="duration">Davomiyligi</label>
+      <label for="duration">Davomiyligi</label>
 
-  <select id="duration">
-    <option value="15">15 soniya</option>
-    <option value="30" selected>30 soniya</option>
-    <option value="60">60 soniya</option>
-  </select>
+      <select id="duration">
+        <option value="15">15 soniya</option>
+        <option value="30" selected>30 soniya</option>
+        <option value="60">60 soniya</option>
+      </select>
 
-  <button id="restartBtn" class="restart-btn">
-    Qayta boshlash
-  </button>
-</section>
+      <button id="restartBtn" class="restart-btn">
+        Qayta boshlash
+      </button>
+    </section>
 
     <section class="stats">
       <div class="stat-card">
@@ -47,14 +47,17 @@
         <strong id="wpm">0</strong>
         <small>WPM</small>
       </div>
+
       <div class="stat-card">
         <span>Aniqlik</span>
         <strong id="accuracy">100%</strong>
       </div>
+
       <div class="stat-card error-stat">
         <span>Belgilar</span>
         <strong id="errors">0 / 0 / 0</strong>
       </div>
+
       <div class="stat-card">
         <span>Vaqt</span>
         <strong id="timer">30</strong>
@@ -72,17 +75,40 @@
         <span id="status">Boshlash uchun yozing</span>
       </div>
 
-      <div id="textDisplay" class="text-display" tabindex="0"
-           role="textbox" aria-label="Matnni shu yerga yozing"></div>
+      <div
+        id="textDisplay"
+        class="text-display"
+        tabindex="0"
+        role="textbox"
+        aria-label="Matnni shu yerga yozing"
+      ></div>
 
-      <p class="hint">Matn ustiga bosing va klaviaturada yozishni boshlang.</p>
+      <p class="hint">
+        Matn ustiga bosing va klaviaturada yozishni boshlang.
+      </p>
+    </section>
+
+    <!-- Ekran klaviaturasi -->
+    <section class="keyboard-helper">
+      <div class="keyboard-heading">
+        <h2>Klaviatura yo‘riqnomasi</h2>
+        <p>Yozilishi kerak bo‘lgan belgi binafsha rangda yoritiladi.</p>
+      </div>
+
+      <div id="virtualKeyboard" class="virtual-keyboard"></div>
+
+      <div class="keyboard-legend">
+        <span><i class="legend-dot next-dot"></i> Keyingi belgi</span>
+        <span><i class="legend-dot correct-dot"></i> To‘g‘ri</span>
+        <span><i class="legend-dot wrong-dot"></i> Xato</span>
+      </div>
     </section>
 
     <section id="result" class="result hidden">
       <h2>Test yakunlandi!</h2>
       <p>Yozish tezligi: <strong id="finalWpm">0</strong> WPM</p>
       <p>Aniqlik: <strong id="finalAccuracy">100%</strong></p>
-      <p>Belgilar <strong id="errors">0 / 0 / 0</strong></p>
+      <p>Belgilar: <strong id="finalErrors">0 / 0 / 0</strong></p>
       <button id="tryAgainBtn">Yana urinib ko‘rish</button>
     </section>
   </main>
